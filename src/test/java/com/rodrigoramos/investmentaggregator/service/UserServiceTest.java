@@ -160,4 +160,45 @@ class UserServiceTest {
             assertEquals(userList.size(), output.size());
         }
     }
+
+    @Nested
+    class deleteById {
+
+        @Test
+        @DisplayName("Should delete user with success when user exists")
+        void shouldDeleteUserWithSuccessWhenUserExists() {
+            // Arrange
+            doReturn(true).when(userRepository).existsById(uuidArgumentCaptor.capture());
+            doNothing().when(userRepository).deleteById(uuidArgumentCaptor.capture());
+            var userId = UUID.randomUUID();
+
+            // Act
+            userService.deleteById(userId.toString());
+
+            // Assert
+            var idList = uuidArgumentCaptor.getAllValues();
+            assertEquals(userId, idList.get(0));
+            assertEquals(userId, idList.get(1));
+
+            verify(userRepository, times(1)).existsById(idList.get(0));
+            verify(userRepository, times(1)).deleteById(idList.get(1));
+        }
+
+        @Test
+        @DisplayName("Should not delete user when user NOT exists")
+        void shouldNotDeleteUserWhenUserNotExists() {
+            // Arrange
+            doReturn(false).when(userRepository).existsById(uuidArgumentCaptor.capture());
+            var userId = UUID.randomUUID();
+
+            // Act
+            userService.deleteById(userId.toString());
+
+            // Assert
+            assertEquals(userId, uuidArgumentCaptor.getValue());
+
+            verify(userRepository, times(1)).existsById(uuidArgumentCaptor.getValue());
+            verify(userRepository, times(0)).deleteById(any());
+        }
+    }
 }
