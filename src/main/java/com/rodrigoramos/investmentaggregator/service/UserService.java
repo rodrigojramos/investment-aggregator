@@ -1,5 +1,6 @@
 package com.rodrigoramos.investmentaggregator.service;
 
+import com.rodrigoramos.investmentaggregator.controller.dto.AccountResponseDto;
 import com.rodrigoramos.investmentaggregator.controller.dto.CreateAccountDto;
 import com.rodrigoramos.investmentaggregator.entity.Account;
 import com.rodrigoramos.investmentaggregator.entity.BillingAddress;
@@ -105,5 +106,15 @@ public class UserService {
         );
 
         billingAddressRepository.save(billingAddress);
+    }
+
+    public List<AccountResponseDto> findAccountsByUserId(String userId) {
+        var user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return user.getAccounts()
+                .stream()
+                .map(acc -> new AccountResponseDto(acc.getAccountId().toString(), acc.getDescription()))
+                .toList();
     }
 }
