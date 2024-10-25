@@ -1,5 +1,6 @@
 package com.rodrigoramos.investmentaggregator.service;
 
+import com.rodrigoramos.investmentaggregator.controller.dto.AccountStockResponseDto;
 import com.rodrigoramos.investmentaggregator.controller.dto.AssociateAccountStockDto;
 import com.rodrigoramos.investmentaggregator.entity.AccountStock;
 import com.rodrigoramos.investmentaggregator.entity.AccountStockId;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,5 +47,16 @@ public class AccountService {
         );
 
         accountStockRepository.save(entity);
+    }
+
+    public List<AccountStockResponseDto> findStocksByAccountId(String accountId) {
+        var account = accountRepository.findById(UUID.fromString(accountId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return account.getAccountStocks()
+                .stream()
+                .map(acc -> new AccountStockResponseDto(acc.getStock().getStockId(), acc.getQuantity(), 0.0))
+                .toList();
+
     }
 }
