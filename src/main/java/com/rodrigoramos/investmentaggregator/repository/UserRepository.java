@@ -1,4 +1,4 @@
-package com.rodrigoramos.investmentaggregator;
+package com.rodrigoramos.investmentaggregator.repository;
 
 import com.rodrigoramos.investmentaggregator.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

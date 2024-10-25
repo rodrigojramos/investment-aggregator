@@ -1,5 +1,8 @@
 package com.rodrigoramos.investmentaggregator.controller;
 
+import com.rodrigoramos.investmentaggregator.controller.dto.CreateAccountDto;
+import com.rodrigoramos.investmentaggregator.controller.dto.CreateUserDto;
+import com.rodrigoramos.investmentaggregator.controller.dto.UpdateUserDto;
 import com.rodrigoramos.investmentaggregator.entity.User;
 import com.rodrigoramos.investmentaggregator.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,13 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
         var userId = userService.createUser(createUserDto);
         return ResponseEntity.created(URI.create("/v1/users" + userId.toString())).build();
+    }
+
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<Void> createAccount(@PathVariable("userId") String userId,
+                                           @RequestBody CreateAccountDto createAccountDto) {
+        userService.createAccount(userId, createAccountDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{userId}")

@@ -1,8 +1,8 @@
 package com.rodrigoramos.investmentaggregator.service;
 
-import com.rodrigoramos.investmentaggregator.UserRepository;
-import com.rodrigoramos.investmentaggregator.controller.CreateUserDto;
-import com.rodrigoramos.investmentaggregator.controller.UpdateUserDto;
+import com.rodrigoramos.investmentaggregator.repository.UserRepository;
+import com.rodrigoramos.investmentaggregator.controller.dto.CreateUserDto;
+import com.rodrigoramos.investmentaggregator.controller.dto.UpdateUserDto;
 import com.rodrigoramos.investmentaggregator.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
